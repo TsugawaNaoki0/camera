@@ -12,6 +12,11 @@ class camera_oneshot_class():
         delay = 1
         window_name = 'frame'
 
+        try:
+            os.chdir("./images")
+        except:
+            os.mkdir("./images")
+
         capture = cv2.VideoCapture(deviceid)
 
 
