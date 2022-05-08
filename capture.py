@@ -53,6 +53,44 @@ class camera_oneshot_class():
         cv2.destroyAllWindows()
 
 
-if __name__ == '__main__':
-    aaa = camera_oneshot_class()
-    bbb = aaa.camera_oneshot()
+# if __name__ == '__main__':
+    # aaa = camera_oneshot_class()
+    # bbb = aaa.camera_oneshot()
+
+
+import cv2
+
+face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+
+eye_cascade = cv2.CascadeClassifier("haarcascade_eye.xml")
+
+
+def detectface(img):
+    img_gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    images = face_cascade.detectMultiScale(img_gray)
+
+    for x,y,w,h in images:
+        face=img[y:y+h,x:x+w]
+        face_gray=img_gray[y:y+h,x:x+w]
+        eyes = eye_cascade.detectMultiScale(face_gray)
+
+        half_face=face.shape[0]//2
+        for ex,ey,ew,eh in eyes:
+            cv2.rectangle(img, (x, y), (x+w, y+h), (0,0,255), 3)
+
+
+mv= cv2.VideoCapture(0)
+while True:
+    ch,frame=mv.read()
+    if ch==True:
+        size=(640,480)
+        frame=cv2.resize(frame,size)
+        detectface(frame)
+        cv2.imshow('movie', frame)
+
+    k=cv2.waitKey(1)
+    if k==27:
+        break
+
+mv.release()
+cv2.destroyAllWindows()
