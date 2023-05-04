@@ -6,6 +6,6 @@ mkdir html
 
 cd html
 
-git clone 
+git clone https://github.com/TsugawaNaoki0/camera.git
 
 mv camera/* .
